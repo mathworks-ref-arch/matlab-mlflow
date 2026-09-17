@@ -255,7 +255,7 @@ automatically generated.</p>
 <span class="c">% CLUSTER clusters the data from the input table into two clusters.</span>
 <span class="c">%</span>
 <span class="c">%  Input table tIn is expected to have two columns: X and Y. The output</span>
-<span class="c">%  table is a copy of the input table with an additional column &quot;index&quot;</span>
+<span class="c">%  table is a copy of the input table with an additional column "index"</span>
 <span class="c">%  appended which indicates the cluster which the data row belongs to.</span>
 <span class="c">%</span>
 <span class="c">%  Parameter replicates configures how many replicates kmeans will use.</span>
@@ -264,8 +264,8 @@ automatically generated.</p>
 <span class="n">tOut</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">tIn</span><span class="p">;</span>
 
 <span class="c">% Perform the clustering and append the result as additional column</span>
-<span class="n">tOut</span><span class="p">.</span><span class="n">index</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kmeans</span><span class="p">(</span><span class="n">tIn</span><span class="p">{:,[</span><span class="s">&quot;X&quot;</span><span class="p">,</span><span class="s">&quot;Y&quot;</span><span class="p">]},</span><span class="mi">2</span><span class="p">,</span><span class="s">&#39;Distance&#39;</span><span class="p">,</span><span class="s">&#39;cityblock&#39;</span><span class="p">,</span><span class="k">...</span>
-<span class="w">    </span><span class="s">&#39;Replicates&#39;</span><span class="p">,</span><span class="n">replicates</span><span class="p">);</span>
+<span class="n">tOut</span><span class="p">.</span><span class="n">index</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">kmeans</span><span class="p">(</span><span class="n">tIn</span><span class="p">{:,[</span><span class="s">"X"</span><span class="p">,</span><span class="s">"Y"</span><span class="p">]},</span><span class="mi">2</span><span class="p">,</span><span class="s">'Distance'</span><span class="p">,</span><span class="s">'cityblock'</span><span class="p">,</span><span class="k">...</span>
+<span class="w">    </span><span class="s">'Replicates'</span><span class="p">,</span><span class="n">replicates</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>This function can cluster data from an input table into two clusters. And in MATLAB it can for example be used as follows:</p>
@@ -300,7 +300,7 @@ automatically generated.</p>
 </pre></div>
 </div>
 <p>Further, you could then visualize the results using:</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="nb">scatter</span><span class="p">(</span><span class="n">tOut</span><span class="p">.</span><span class="n">X</span><span class="p">,</span><span class="n">tOut</span><span class="p">.</span><span class="n">Y</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="n">tOut</span><span class="p">.</span><span class="n">index</span><span class="p">,</span><span class="s">&quot;filled&quot;</span><span class="p">)</span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="nb">scatter</span><span class="p">(</span><span class="n">tOut</span><span class="p">.</span><span class="n">X</span><span class="p">,</span><span class="n">tOut</span><span class="p">.</span><span class="n">Y</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="n">tOut</span><span class="p">.</span><span class="n">index</span><span class="p">,</span><span class="s">"filled"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><img alt="" src="../_images/scatterplot.png" /></p>
@@ -308,22 +308,22 @@ automatically generated.</p>
 <section id="matlab-mlflow-model">
 <h3>MATLAB MLflow Model<a class="headerlink" href="#matlab-mlflow-model" title="Link to this heading"></a></h3>
 <p>Now one of the things we can do with this function is log it on our MLflow server as MATLAB code that can later be used in MATLAB again. In this example we use a local server running at <code class="docutils literal notranslate"><span class="pre">http://localhost:5000</span></code>. To instruct MATLAB to work with this we can use:</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">mlflow</span><span class="p">.</span><span class="n">set_tracking_uri</span><span class="p">(</span><span class="s">&quot;http://localhost:5000&quot;</span><span class="p">)</span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">mlflow</span><span class="p">.</span><span class="n">set_tracking_uri</span><span class="p">(</span><span class="s">"http://localhost:5000"</span><span class="p">)</span>
 </pre></div>
 </div>
 <blockquote>
 <div><p><em>Or alternatively this can also be configured using environment variable <code class="docutils literal notranslate"><span class="pre">MLFLOW_TRACKING_URI</span></code>.</em></p>
 </div></blockquote>
 <p>Further, when you want to log a model you do that as part of a run in a particular experiment. This is especially useful if your model needs to be trained, you can then track how the model was trained exactly (e.g. with which parameters and which data). Now that is not the case for our model here, but we will still want to follow this MLflow convention. So we first set an experiment and start a run using the <a class="reference internal" href="../Fluent.html"><span class="std std-doc">Fluent Interface</span></a>:</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">mlflow</span><span class="p">.</span><span class="n">set_experiment</span><span class="p">(</span><span class="s">&quot;My MATLAB Clustering Model&quot;</span><span class="p">)</span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">mlflow</span><span class="p">.</span><span class="n">set_experiment</span><span class="p">(</span><span class="s">"My MATLAB Clustering Model"</span><span class="p">)</span>
 <span class="gp">&gt;&gt; </span><span class="n">mlflow</span><span class="p">.</span><span class="n">start_run</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>And then we can use <code class="docutils literal notranslate"><span class="pre">mlflow.matlab.log_model</span></code> to log the model. Since we already know we want to be able to easily re-use this model we will also immediately register it as a registered model:</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">mlflow</span><span class="p">.</span><span class="n">matlab</span><span class="p">.</span><span class="n">log_model</span><span class="p">(</span><span class="n">MATLABFiles</span><span class="p">=</span><span class="s">&quot;myClustering.m&quot;</span><span class="p">,</span><span class="n">RegisteredModelName</span><span class="p">=</span><span class="s">&quot;myMATLABClustering&quot;</span><span class="p">);</span>
-<span class="go">Successfully registered model &#39;myMATLABClustering&#39;.</span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">mlflow</span><span class="p">.</span><span class="n">matlab</span><span class="p">.</span><span class="n">log_model</span><span class="p">(</span><span class="n">MATLABFiles</span><span class="p">=</span><span class="s">"myClustering.m"</span><span class="p">,</span><span class="n">RegisteredModelName</span><span class="p">=</span><span class="s">"myMATLABClustering"</span><span class="p">);</span>
+<span class="go">Successfully registered model 'myMATLABClustering'.</span>
 <span class="go">2026/03/13 11:40:17 INFO mlflow.store.model_registry.abstract_store: Waiting up to 300 seconds for model version to finish creation. Model name: myMATLABClustering, version 1</span>
-<span class="go">Created version &#39;1&#39; of model &#39;myMATLABClustering&#39;.</span>
+<span class="go">Created version '1' of model 'myMATLABClustering'.</span>
 </pre></div>
 </div>
 <div class="admonition hint">
@@ -337,11 +337,11 @@ automatically generated.</p>
 </pre></div>
 </div>
 <p>Now let’s say that some time later, you want to re-use this model in MATLAB. Then, since we registered the model, we can easily get to it using a <code class="docutils literal notranslate"><span class="pre">models:/</span></code> MLflow URI:</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">loc</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">mlflow</span><span class="p">.</span><span class="n">matlab</span><span class="p">.</span><span class="n">load_model</span><span class="p">(</span><span class="s">&quot;models:/myMATLABClustering/1&quot;</span><span class="p">)</span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">loc</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">mlflow</span><span class="p">.</span><span class="n">matlab</span><span class="p">.</span><span class="n">load_model</span><span class="p">(</span><span class="s">"models:/myMATLABClustering/1"</span><span class="p">)</span>
 
 <span class="go">loc = </span>
 
-<span class="go">    &quot;/tmp/tmpa7swg9y_/matlab&quot;</span>
+<span class="go">    "/tmp/tmpa7swg9y_/matlab"</span>
 </pre></div>
 </div>
 <p>As we can see this returned a (temporary) location on disk which the model got downloaded to, and if we look at that location we indeed see our MATLAB function there:</p>
@@ -353,7 +353,7 @@ automatically generated.</p>
 <div class="admonition hint">
 <p class="admonition-title">Hint</p>
 <p>If we would not have registered the model as a registered model, we could not have easily accessed it by its name but it can still be accessed by its ID (<code class="docutils literal notranslate"><span class="pre">models:/EnterModelIdHere</span></code>). Where this model ID could for example be found through the MLflow server web interface or programmatically by querying the run:</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">r</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">mlflow</span><span class="p">.</span><span class="n">get_run</span><span class="p">(</span><span class="s">&#39;11c3fb2acf1a489c8727f905a1b42c87&#39;</span><span class="p">);</span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">r</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">mlflow</span><span class="p">.</span><span class="n">get_run</span><span class="p">(</span><span class="s">'11c3fb2acf1a489c8727f905a1b42c87'</span><span class="p">);</span>
 <span class="gp">&gt;&gt; </span><span class="n">r</span><span class="p">.</span><span class="n">outputs</span><span class="p">.</span><span class="n">model_outputs</span><span class="p">{</span><span class="mi">1</span><span class="p">}.</span><span class="n">model_id</span>
 
 <span class="go">ans = </span>
@@ -364,7 +364,7 @@ automatically generated.</p>
 </pre></div>
 </div>
 <p>Where the run ID <code class="docutils literal notranslate"><span class="pre">11c3fb2acf1a489c8727f905a1b42c87</span></code> was returned when we called <code class="docutils literal notranslate"><span class="pre">mlflow.end_run()</span></code>, <a class="reference internal" href="#endrun">see above</a>. If you no longer have the run ID either, you could try searching for it:</p>
-<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">runs</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">mlflow</span><span class="p">.</span><span class="n">search_runs</span><span class="p">(</span><span class="n">experiment_names</span><span class="p">={</span><span class="s">&quot;My MATLAB Clustering Model&quot;</span><span class="p">});</span>
+<div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt; </span><span class="n">runs</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">mlflow</span><span class="p">.</span><span class="n">search_runs</span><span class="p">(</span><span class="n">experiment_names</span><span class="p">={</span><span class="s">"My MATLAB Clustering Model"</span><span class="p">});</span>
 <span class="gp">&gt;&gt; </span><span class="n">runs</span><span class="p">.</span><span class="n">table</span>
 
 <span class="go">ans =</span>
@@ -374,7 +374,7 @@ automatically generated.</p>
 <span class="go">                  run_id                  experiment_id      status                                artifact_uri                                   start_time               end_time          tags.mlflow.source.type    tags.mlflow.user    tags.mlflow.source.name    tags.mlflow.runName </span>
 <span class="go">    __________________________________    _____________    __________    ________________________________________________________________    ____________________    ____________________    _______________________    ________________    _______________________    ____________________</span>
 
-<span class="go">    &quot;11c3fb2acf1a489c8727f905a1b42c87&quot;         &quot;1&quot;         &quot;FINISHED&quot;    &quot;mlflow-artifacts:/1/11c3fb2acf1a489c8727f905a1b42c87/artifacts&quot;    13-Mar-2026 14:48:32    13-Mar-2026 14:48:43            &quot;LOCAL&quot;                &quot;user&quot;                   &quot;&quot;               &quot;delicate-mink-467&quot;</span>
+<span class="go">    "11c3fb2acf1a489c8727f905a1b42c87"         "1"         "FINISHED"    "mlflow-artifacts:/1/11c3fb2acf1a489c8727f905a1b42c87/artifacts"    13-Mar-2026 14:48:32    13-Mar-2026 14:48:43            "LOCAL"                "user"                   ""               "delicate-mink-467"</span>
 </pre></div>
 </div>
 </div>
@@ -383,7 +383,7 @@ automatically generated.</p>
 <h3>Pyfunc compatible MLflow Model<a class="headerlink" href="#pyfunc-compatible-mlflow-model" title="Link to this heading"></a></h3>
 <p>But what if we want this model to also be useable outside of MATLAB? For example in Python or by hosting it as RESTful endpoint using <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/cli.html#mlflow-models-serve" rel="noreferrer" target="_blank">MLflow model serving</a>. In that case we can log our model with the <a class="reference internal" href="subflavors/compiler_sdk_python.html"><span class="std std-doc">compiler_sdk_python sub flavor</span></a> by using:</p>
 <div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Start a run</span>
-<span class="n">mlflow</span><span class="p">.</span><span class="n">set_experiment</span><span class="p">(</span><span class="s">&quot;My MATLAB Clustering Model&quot;</span><span class="p">);</span>
+<span class="n">mlflow</span><span class="p">.</span><span class="n">set_experiment</span><span class="p">(</span><span class="s">"My MATLAB Clustering Model"</span><span class="p">);</span>
 <span class="n">mlflow</span><span class="p">.</span><span class="n">start_run</span><span class="p">();</span>
 
 <span class="c">% Generate an example input</span>
@@ -396,16 +396,16 @@ automatically generated.</p>
 <span class="w">    </span><span class="k">...</span><span class="c"> This time we use FunctionFile to indicate that we want to create a</span>
 <span class="w">    </span><span class="k">...</span><span class="c"> compiler_sdk_python sub flavor model with this function as main </span>
 <span class="w">    </span><span class="k">...</span><span class="c"> entry point</span>
-<span class="w">    </span><span class="n">FunctionFile</span><span class="p">=</span><span class="s">&quot;myClustering.m&quot;</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
+<span class="w">    </span><span class="n">FunctionFile</span><span class="p">=</span><span class="s">"myClustering.m"</span><span class="p">,</span><span class="w"> </span><span class="k">...</span>
 <span class="w">    </span><span class="k">...</span><span class="c"> To be able to create such kind of models, the in- and output data</span>
 <span class="w">    </span><span class="k">...</span><span class="c"> types must be known. The easiest way to specify this is by</span>
 <span class="w">    </span><span class="k">...</span><span class="c"> providing example inputs, we provide the example table as input</span>
-<span class="w">    </span><span class="k">...</span><span class="c"> as well as a value for the &quot;replicates&quot; parameter</span>
+<span class="w">    </span><span class="k">...</span><span class="c"> as well as a value for the "replicates" parameter</span>
 <span class="w">    </span><span class="n">ExampleInputs</span><span class="p">={</span><span class="n">tIn</span><span class="p">,</span><span class="mi">5</span><span class="p">},</span><span class="k">...</span>
 <span class="w">    </span><span class="k">...</span><span class="c"> Further we need to specify how many of such parameters there are</span>
 <span class="w">    </span><span class="n">NParams</span><span class="p">=</span><span class="mi">1</span><span class="p">,</span><span class="k">...</span>
 <span class="w">    </span><span class="k">...</span><span class="c"> Finally we also register this model as registered model</span>
-<span class="w">    </span><span class="n">RegisteredModelName</span><span class="p">=</span><span class="s">&quot;myClustering&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="n">RegisteredModelName</span><span class="p">=</span><span class="s">"myClustering"</span><span class="p">)</span>
 
 <span class="c">% end the run</span>
 <span class="n">mlflow</span><span class="p">.</span><span class="n">end_run</span><span class="p">();</span>
@@ -415,9 +415,9 @@ automatically generated.</p>
 <div class="highlight-python-console notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Import the MLflow module</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">mlflow</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Configure the tracking URI</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mlflow</span><span class="o">.</span><span class="n">set_tracking_uri</span><span class="p">(</span><span class="s2">&quot;http://localhost:5000&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mlflow</span><span class="o">.</span><span class="n">set_tracking_uri</span><span class="p">(</span><span class="s2">"http://localhost:5000"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load the model</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">pyfunc</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="s2">&quot;models:/myClustering/1&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">pyfunc</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="s2">"models:/myClustering/1"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Since the input example is also saved with the model, see:</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">input_example</span>
 <span class="go">            X         Y</span>
@@ -435,7 +435,7 @@ automatically generated.</p>
 
 <span class="go">[200 rows x 2 columns]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># We can easily reuse it to quickly call the model</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">input_example</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;replicates&#39;</span><span class="p">:</span><span class="mf">5.0</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">input_example</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">'replicates'</span><span class="p">:</span><span class="mf">5.0</span><span class="p">})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># And see the result</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">result</span>
 <span class="go">            X         Y  index</span>
@@ -456,7 +456,7 @@ automatically generated.</p>
 </div>
 <p>Or instead of calling the model from Python, we can also use the MLflow model serving feature to host the model. Again this requires a MATLAB Runtime to be available, make sure it is configured before running the following to serve the model:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span><span class="w"> </span><span class="nv">MLFLOW_TRACKING_URI</span><span class="o">=</span>http://localhost:5000
-<span class="gp">$ </span>mlflow<span class="w"> </span>models<span class="w"> </span>serve<span class="w"> </span>-m<span class="w"> </span><span class="s1">&#39;models:/myClustering/1&#39;</span><span class="w"> </span>--port<span class="w"> </span><span class="m">5001</span><span class="w"> </span>--env-manager<span class="w"> </span>uv
+<span class="gp">$ </span>mlflow<span class="w"> </span>models<span class="w"> </span>serve<span class="w"> </span>-m<span class="w"> </span><span class="s1">'models:/myClustering/1'</span><span class="w"> </span>--port<span class="w"> </span><span class="m">5001</span><span class="w"> </span>--env-manager<span class="w"> </span>uv
 </pre></div>
 </div>
 <blockquote>
@@ -464,12 +464,12 @@ automatically generated.</p>
 </div></blockquote>
 <p>After which we can for example use <code class="docutils literal notranslate"><span class="pre">curl</span></code> to call the <code class="docutils literal notranslate"><span class="pre">/invocations</span></code> endpoint. This requires an <a class="reference external" href="https://mlflow.org/docs/latest/ml/deployment/deploy-model-locally/#accepted-input-formats" rel="noreferrer" target="_blank">input body in the correct format</a> and for our model here, this will look something like:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;dataframe_split&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;columns&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="s2">&quot;X&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="s2">&quot;Y&quot;</span>
+<span class="w">  </span><span class="nt">"dataframe_split"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"columns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">"X"</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">"Y"</span>
 <span class="w">    </span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">      </span><span class="p">[</span>
 <span class="w">        </span><span class="mf">0.7135410595364997</span><span class="p">,</span>
 <span class="w">        </span><span class="mf">0.9455510008911132</span>
@@ -481,15 +481,15 @@ automatically generated.</p>
 <span class="w">      </span><span class="err">…</span>
 <span class="w">    </span><span class="p">]</span>
 <span class="w">  </span><span class="p">},</span>
-<span class="w">  </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;replicates&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">5.0</span>
+<span class="w">  </span><span class="nt">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"replicates"</span><span class="p">:</span><span class="w"> </span><span class="mf">5.0</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>Luckily the package generated such an input based on the example MATLAB input which we provided. It will have created a file named <code class="docutils literal notranslate"><span class="pre">serving_input_example.json</span></code> next to the MATLAB code. We can use that file as an input to <code class="docutils literal notranslate"><span class="pre">curl</span></code> to invoke the model:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl<span class="w"> </span>http://localhost:5001/invocations<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>--data<span class="w"> </span>@serving_input_example.json
-<span class="go">{&quot;predictions&quot;: [{&quot;X&quot;: 0.7135410595364997, &quot;Y&quot;: 0.9455510008911132, &quot;index&quot;: 1.0}, …</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl<span class="w"> </span>http://localhost:5001/invocations<span class="w"> </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span>--data<span class="w"> </span>@serving_input_example.json
+<span class="go">{"predictions": [{"X": 0.7135410595364997, "Y": 0.9455510008911132, "index": 1.0}, …</span>
 </pre></div>
 </div>
 </section>

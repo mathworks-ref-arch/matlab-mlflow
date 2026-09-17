@@ -354,7 +354,7 @@ run, the RunData contains the most recently logged value at the largest step for
 tracking backend.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Single <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.model_registry.ModelVersion" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.model_registry.ModelVersion</span></code></a> object created by
+<dd class="field-odd"><p>Single <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.model_registry.ModelVersion" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.model_registry.ModelVersion</span></code></a> object created by
 backend.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
@@ -386,7 +386,7 @@ automatically.</p></li>
 being created and is in <code class="docutils literal notranslate"><span class="pre">READY</span></code> status. By default, the function
 waits for five minutes. Specify 0 or None to skip waiting.</p></li>
 <li><p><strong>tags</strong> – A dictionary of key-value pairs that are converted into
-<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.model_registry.ModelVersionTag" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.model_registry.ModelVersionTag</span></code></a> objects.</p></li>
+<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.model_registry.ModelVersionTag" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.model_registry.ModelVersionTag</span></code></a> objects.</p></li>
 <li><p><strong>env_pack</strong> – <p>Either a string or an EnvPackConfig. If specified,
 the model dependencies are optionally first installed into the current Python
 environment, and then the complete environment will be packaged and included
@@ -448,25 +448,25 @@ service into the current active local trace, so that you can see the full
 trace including what happens inside the remote service call.</p>
 <p>The following example demonstrates how to use this function to merge a trace from a remote
 service to the current active trace in the function.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@mlflow</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;predict&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@mlflow</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"predict"</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
     <span class="c1"># Call a remote service that returns a trace in the response</span>
-    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://your-service-endpoint&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"https://your-service-endpoint"</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
 
     <span class="c1"># Extract the trace from the response</span>
-    <span class="n">trace_json</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trace&quot;</span><span class="p">)</span>
+    <span class="n">trace_json</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"trace"</span><span class="p">)</span>
 
     <span class="c1"># Use the remote trace as a part of the current active trace.</span>
-    <span class="c1"># It will be merged under the span &quot;predict&quot; and exported together when it is ended.</span>
+    <span class="c1"># It will be merged under the span "predict" and exported together when it is ended.</span>
     <span class="n">mlflow</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">trace_json</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>If you have a specific target span to merge the trace under, you can pass the target span</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
     <span class="c1"># Create a local span</span>
-    <span class="k">with</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">start_span</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;predict&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">span</span><span class="p">:</span>
-        <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;https://your-service-endpoint&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
-        <span class="n">trace_json</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;trace&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">start_span</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"predict"</span><span class="p">)</span> <span class="k">as</span> <span class="n">span</span><span class="p">:</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"https://your-service-endpoint"</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+        <span class="n">trace_json</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"trace"</span><span class="p">)</span>
 
         <span class="c1"># Merge the remote trace under the span created above</span>
         <span class="n">mlflow</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">trace_json</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">span</span><span class="p">)</span>
@@ -475,7 +475,7 @@ service to the current active trace in the function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>trace</strong> – <p>A <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Trace" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trace</span></code></a> object or a dictionary representation
+<li><p><strong>trace</strong> – <p>A <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Trace" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trace</span></code></a> object or a dictionary representation
 of the trace. The trace <strong>must</strong> be already completed i.e. no further updates should
 be made to it. Otherwise, this function will raise an exception.</p>
 </p></li>
@@ -501,7 +501,7 @@ be made to it. Otherwise, this function will raise an exception.</p>
 <dd><p>Logs an expectation (e.g. ground truth label) to a Trace. This API only takes keyword arguments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Assessment" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code></a>: The created expectation assessment.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Assessment" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code></a>: The created expectation assessment.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -509,7 +509,7 @@ be made to it. Otherwise, this function will raise an exception.</p>
 <li><p><strong>name</strong> – The name of the expectation assessment e.g., “expected_answer</p></li>
 <li><p><strong>value</strong> – The value of the expectation. It can be any JSON-serializable value.</p></li>
 <li><p><strong>source</strong> – The source of the expectation assessment. Must be an instance of
-<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.AssessmentSource" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentSource</span></code></a>. If not provided,
+<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.AssessmentSource" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentSource</span></code></a>. If not provided,
 default to HUMAN source type.</p></li>
 <li><p><strong>metadata</strong> – Additional metadata for the expectation.</p></li>
 <li><p><strong>span_id</strong> – The ID of the span associated with the expectation, if it needs be
@@ -552,15 +552,15 @@ Active run: None
 <dl class="mat function">
 <dt class="sig sig-object mat" id="mlflow.register_prompt">
 <span class="sig-prename descclassname"><span class="pre">mlflow.</span></span><span class="sig-name descname"><span class="pre">register_prompt</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mlflow.register_prompt" title="Link to this definition"></a></dt>
-<dd><p>Register a new <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Prompt" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prompt</span></code></a> in the MLflow Prompt Registry.</p>
-<p>A <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Prompt" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prompt</span></code></a> is a pair of name and
+<dd><p>Register a new <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Prompt" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prompt</span></code></a> in the MLflow Prompt Registry.</p>
+<p>A <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Prompt" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prompt</span></code></a> is a pair of name and
 template content at minimum. With MLflow Prompt Registry, you can create, manage, and
 version control prompts with the MLflow’s robust model tracking framework.</p>
 <p>If there is no registered prompt with the given name, a new prompt will be created.
 Otherwise, a new version of the existing prompt will be created.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Prompt" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prompt</span></code></a> object that was created.</p>
+<dd class="field-odd"><p>A <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Prompt" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prompt</span></code></a> object that was created.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -579,7 +579,7 @@ Otherwise, a new version of the existing prompt will be created.</p>
 <p>If you want to use the prompt with a framework that uses single curly braces
 e.g. LangChain, you can use the <cite>to_single_brace_format</cite> method to convert the
 loaded prompt to a format that uses single curly braces.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">prompt</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_prompt</span><span class="p">(</span><span class="s2">&quot;my_prompt&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">prompt</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">load_prompt</span><span class="p">(</span><span class="s2">"my_prompt"</span><span class="p">)</span>
 <span class="n">langchain_format</span> <span class="o">=</span> <span class="n">prompt</span><span class="o">.</span><span class="n">to_single_brace_format</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -626,7 +626,7 @@ it fetches the trace from the tracking store. If the trace is not found in the t
 it returns None.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Trace" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.Trace</span></code></a> objects with the given request ID.</p>
+<dd class="field-odd"><p>A <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Trace" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.Trace</span></code></a> objects with the given request ID.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -647,7 +647,7 @@ return None without any warning. Default to False.</p></li>
 <dd><p>Logs feedback to a Trace. This API only takes keyword arguments.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Assessment" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code></a>: The created feedback assessment.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Assessment" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code></a>: The created feedback assessment.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -662,11 +662,11 @@ return None without any warning. Default to False.</p></li>
 - list of values of the same types as above
 - dict with string keys and values of the same types as above</p></li>
 <li><p><strong>source</strong> – The source of the feedback assessment. Must be an instance of
-<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.AssessmentSource" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentSource</span></code></a>. If not provided, defaults to
+<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.AssessmentSource" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentSource</span></code></a>. If not provided, defaults to
 CODE source type</p></li>
 <li><p><strong>error</strong> – An error object representing any issues encountered while computing the
 feedback, e.g., a timeout error from an LLM judge. Accepts an exception
-object, or an <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.AssessmentError" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentError</span></code></a> object. Either
+object, or an <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.AssessmentError" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentError</span></code></a> object. Either
 this or <cite>value</cite> must be provided.</p></li>
 <li><p><strong>rationale</strong> – The rationale / justification for the feedback.</p></li>
 <li><p><strong>metadata</strong> – Additional metadata for the feedback.</p></li>
@@ -686,12 +686,12 @@ associated with a specific span in the trace.</p></li>
 <dd><p>Search for experiments that match the specified search query.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Experiment" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Experiment</span></code></a> objects.</p>
+<dd class="field-odd"><p>A list of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Experiment" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Experiment</span></code></a> objects.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>view_type</strong> – One of enum values <code class="docutils literal notranslate"><span class="pre">ACTIVE_ONLY</span></code>, <code class="docutils literal notranslate"><span class="pre">DELETED_ONLY</span></code>, or <code class="docutils literal notranslate"><span class="pre">ALL</span></code>
-defined in <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.ViewType" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.ViewType</span></code></a>.</p></li>
+defined in <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.ViewType" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.ViewType</span></code></a>.</p></li>
 <li><p><strong>max_results</strong> – If passed, specifies the maximum number of experiments desired. If not
 passed, all experiments will be returned.</p></li>
 <li><p><strong>filter_string</strong> – <p>Filter query string (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;name</span> <span class="pre">=</span> <span class="pre">'my_experiment'&quot;</span></code>), defaults to
@@ -1055,7 +1055,7 @@ run.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>When <cite>synchronous=True</cite>, returns None. When <cite>synchronous=False</cite>, returns an
-<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.utils.html#mlflow.utils.async_logging.run_operations.RunOperations" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.utils.async_logging.run_operations.RunOperations</span></code></a> instance that
+<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.utils.html#mlflow.utils.async_logging.run_operations.RunOperations" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.utils.async_logging.run_operations.RunOperations</span></code></a> instance that
 represents future for logging operation.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
@@ -1084,11 +1084,11 @@ defaults to False if not set.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dataset</strong> – <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.data.html#mlflow.data.dataset.Dataset" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.data.dataset.Dataset</span></code></a> object to be logged.</p></li>
+<li><p><strong>dataset</strong> – <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.data.html#mlflow.data.dataset.Dataset" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.data.dataset.Dataset</span></code></a> object to be logged.</p></li>
 <li><p><strong>context</strong> – Context in which the dataset is used. For example: “training”, “testing”.
 This will be set as an input tag with key <cite>mlflow.data.context</cite>.</p></li>
 <li><p><strong>tags</strong> – Tags to be associated with the dataset. Dictionary of tag_key -&gt; tag_value.</p></li>
-<li><p><strong>model</strong> – A <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.LoggedModelInput" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.LoggedModelInput</span></code></a> instance to log as input to
+<li><p><strong>model</strong> – A <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.LoggedModelInput" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.LoggedModelInput</span></code></a> instance to log as input to
 the run.</p></li>
 </ul>
 </dd>
@@ -1115,7 +1115,7 @@ tracking parameters and performance data (metrics, traces etc.) for a model, app
 generative AI agent that is not packaged using the MLflow Model format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A new <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.LoggedModel" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.LoggedModel</span></code></a> object with status <code class="docutils literal notranslate"><span class="pre">READY</span></code>.</p>
+<dd class="field-odd"><p>A new <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.LoggedModel" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.LoggedModel</span></code></a> object with status <code class="docutils literal notranslate"><span class="pre">READY</span></code>.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -1143,7 +1143,7 @@ type <code class="docutils literal notranslate"><span class="pre">&quot;agent&qu
 <dd><p>Search for model versions that satisfy the filter criteria.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.model_registry.ModelVersion" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.model_registry.ModelVersion</span></code></a> objects
+<dd class="field-odd"><p>A list of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.model_registry.ModelVersion" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.model_registry.ModelVersion</span></code></a> objects
 that satisfy the search expressions.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
@@ -1195,7 +1195,7 @@ new active run.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>When <cite>synchronous=True</cite>, returns None. When <cite>synchronous=False</cite>, returns an
-<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.utils.html#mlflow.utils.async_logging.run_operations.RunOperations" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.utils.async_logging.run_operations.RunOperations</span></code></a> instance that
+<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.utils.html#mlflow.utils.async_logging.run_operations.RunOperations" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.utils.async_logging.run_operations.RunOperations</span></code></a> instance that
 represents future for logging operation.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
@@ -1224,12 +1224,12 @@ corresponding input.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>datasets</strong> – List of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.data.html#mlflow.data.dataset.Dataset" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.data.dataset.Dataset</span></code></a> object to be logged.</p></li>
+<li><p><strong>datasets</strong> – List of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.data.html#mlflow.data.dataset.Dataset" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.data.dataset.Dataset</span></code></a> object to be logged.</p></li>
 <li><p><strong>contexts</strong> – List of context in which the dataset is used. For example: “training”, “testing”.
 This will be set as an input tag with key <cite>mlflow.data.context</cite>.</p></li>
 <li><p><strong>tags_list</strong> – List of tags to be associated with the dataset. Dictionary of
 tag_key -&gt; tag_value.</p></li>
-<li><p><strong>models</strong> – List of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.LoggedModelInput" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.LoggedModelInput</span></code></a> instance to log as input
+<li><p><strong>models</strong> – List of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.LoggedModelInput" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.LoggedModelInput</span></code></a> instance to log as input
 to the run. Currently only Databricks managed MLflow supports this argument.</p></li>
 </ul>
 </dd>
@@ -1308,7 +1308,7 @@ as prompts (i.e. tagged with <cite>mlflow.prompt.is_prompt=true</cite>). We can
 further restrict results via a standard registry filter expression.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><p>A list of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Prompt" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prompt</span></code></a> objects representing prompt metadata:</p>
+<dd class="field-odd"><p><p>A list of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Prompt" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prompt</span></code></a> objects representing prompt metadata:</p>
 <ul class="simple">
 <li><p>name: The prompt name</p></li>
 <li><p>description: The prompt description</p></li>
@@ -1316,7 +1316,7 @@ further restrict results via a standard registry filter expression.</p>
 <li><p>creation_timestamp: When the prompt was created</p></li>
 </ul>
 <p>To get the actual prompt template content,
-use <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.genai.html#mlflow.genai.load_prompt" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">mlflow.genai.load_prompt</span></code></a> API with a specific version:</p>
+use <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.genai.html#mlflow.genai.load_prompt" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">mlflow.genai.load_prompt</span></code></a> API with a specific version:</p>
 </p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
@@ -1386,7 +1386,7 @@ variable <cite>MLFLOW_ENABLE_ASYNC_LOGGING</cite>, which defaults to False if no
 <li><p><strong>run_id</strong> – If specified, log the metric to the specified run. If not specified, log the metric
 to the currently active run.</p></li>
 <li><p><strong>model_id</strong> – The ID of the model associated with the metric. If not specified, use the current
-active model ID set by <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.html#mlflow.set_active_model" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">mlflow.set_active_model</span></code></a>. If no active model exists,
+active model ID set by <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.html#mlflow.set_active_model" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">mlflow.set_active_model</span></code></a>. If no active model exists,
 the models IDs associated with the specified or active run will be used.</p></li>
 <li><p><strong>dataset</strong> – The dataset associated with the metric.</p></li>
 </ul>
@@ -1402,10 +1402,10 @@ the models IDs associated with the specified or active run will be used.</p></li
 <span class="sig-prename descclassname"><span class="pre">mlflow.</span></span><span class="sig-name descname"><span class="pre">initialize_logged_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name</span></em>, <em class="sig-param"><span class="pre">source_run_id</span></em>, <em class="sig-param"><span class="pre">tags</span></em>, <em class="sig-param"><span class="pre">params</span></em>, <em class="sig-param"><span class="pre">model_type</span></em>, <em class="sig-param"><span class="pre">experiment_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mlflow.initialize_logged_model" title="Link to this definition"></a></dt>
 <dd><p>Initialize a LoggedModel. Creates a LoggedModel with status <code class="docutils literal notranslate"><span class="pre">PENDING</span></code> and no artifacts. You
 must add artifacts to the model and finalize it to the <code class="docutils literal notranslate"><span class="pre">READY</span></code> state, for example by calling
-a flavor-specific <code class="docutils literal notranslate"><span class="pre">log_model()</span></code> method such as <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.pyfunc.html#mlflow.pyfunc.log_model" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">mlflow.pyfunc.log_model</span></code></a>.</p>
+a flavor-specific <code class="docutils literal notranslate"><span class="pre">log_model()</span></code> method such as <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.pyfunc.html#mlflow.pyfunc.log_model" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">mlflow.pyfunc.log_model</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A new <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.LoggedModel" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.LoggedModel</span></code></a> object with status <code class="docutils literal notranslate"><span class="pre">PENDING</span></code>.</p>
+<dd class="field-odd"><p>A new <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.LoggedModel" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.LoggedModel</span></code></a> object with status <code class="docutils literal notranslate"><span class="pre">PENDING</span></code>.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -1448,7 +1448,7 @@ current thread.</p>
 <dd><p>Search for registered models that satisfy the filter criteria.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.model_registry.RegisteredModel" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.model_registry.RegisteredModel</span></code></a> objects
+<dd class="field-odd"><p>A list of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.model_registry.RegisteredModel" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.model_registry.RegisteredModel</span></code></a> objects
 that satisfy the search expressions.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
@@ -1516,7 +1516,7 @@ information.</p>
 <p>For information on using this method in chained workflows, see <a class="reference external" href="../projects.html#building-multistep-workflows" rel="noreferrer" target="_blank">Building Multistep Workflows</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.projects.html#mlflow.projects.SubmittedRun" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.projects.SubmittedRun</span></code></a> exposing information (e.g. run ID)
+<dd class="field-odd"><p><a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.projects.html#mlflow.projects.SubmittedRun" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.projects.SubmittedRun</span></code></a> exposing information (e.g. run ID)
 about the launched run.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
@@ -1592,7 +1592,7 @@ for available options.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><dl class="simple">
-<dt>If output_format is <code class="docutils literal notranslate"><span class="pre">list</span></code>: a list of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Run" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.Run</span></code></a>. If</dt><dd><p>output_format is <code class="docutils literal notranslate"><span class="pre">pandas</span></code>: <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> of runs, where each metric,
+<dt>If output_format is <code class="docutils literal notranslate"><span class="pre">list</span></code>: a list of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Run" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.Run</span></code></a>. If</dt><dd><p>output_format is <code class="docutils literal notranslate"><span class="pre">pandas</span></code>: <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> of runs, where each metric,
 parameter, and tag is expanded into its own column named metrics.*, params.*, or
 tags.* respectively. For runs that don’t have a particular metric, parameter, or tag,
 the value for the corresponding column is (NumPy) <code class="docutils literal notranslate"><span class="pre">Nan</span></code>, <code class="docutils literal notranslate"><span class="pre">None</span></code>, or <code class="docutils literal notranslate"><span class="pre">None</span></code>
@@ -1610,14 +1610,14 @@ also not <code class="docutils literal notranslate"><span class="pre">None</span
 experiment if <code class="docutils literal notranslate"><span class="pre">experiment_names</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code> or <code class="docutils literal notranslate"><span class="pre">[]</span></code>.</p></li>
 <li><p><strong>filter_string</strong> – Filter query string, defaults to searching all runs.</p></li>
 <li><p><strong>run_view_type</strong> – one of enum values <code class="docutils literal notranslate"><span class="pre">ACTIVE_ONLY</span></code>, <code class="docutils literal notranslate"><span class="pre">DELETED_ONLY</span></code>, or <code class="docutils literal notranslate"><span class="pre">ALL</span></code> runs
-defined in <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.ViewType" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.ViewType</span></code></a>.</p></li>
+defined in <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.ViewType" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.ViewType</span></code></a>.</p></li>
 <li><p><strong>max_results</strong> – The maximum number of runs to put in the dataframe. Default is 100,000
 to avoid causing out-of-memory issues on the user’s machine.</p></li>
 <li><p><strong>order_by</strong> – List of columns to order by (e.g., “metrics.rmse”). The <code class="docutils literal notranslate"><span class="pre">order_by</span></code> column
 can contain an optional <code class="docutils literal notranslate"><span class="pre">DESC</span></code> or <code class="docutils literal notranslate"><span class="pre">ASC</span></code> value. The default is <code class="docutils literal notranslate"><span class="pre">ASC</span></code>.
 The default ordering is to sort by <code class="docutils literal notranslate"><span class="pre">start_time</span> <span class="pre">DESC</span></code>, then <code class="docutils literal notranslate"><span class="pre">run_id</span></code>.</p></li>
 <li><p><strong>output_format</strong> – The output format to be returned. If <code class="docutils literal notranslate"><span class="pre">pandas</span></code>, a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>
-is returned and, if <code class="docutils literal notranslate"><span class="pre">list</span></code>, a list of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Run" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.Run</span></code></a>
+is returned and, if <code class="docutils literal notranslate"><span class="pre">list</span></code>, a list of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Run" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.Run</span></code></a>
 is returned.</p></li>
 <li><p><strong>search_all_experiments</strong> – Boolean specifying whether all experiments should be searched.
 Only honored if <code class="docutils literal notranslate"><span class="pre">experiment_ids</span></code> is <code class="docutils literal notranslate"><span class="pre">[]</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
@@ -1642,7 +1642,7 @@ active run.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>When <cite>synchronous=True</cite>, returns None. When <cite>synchronous=False</cite>, returns an
-<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.utils.html#mlflow.utils.async_logging.run_operations.RunOperations" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.utils.async_logging.run_operations.RunOperations</span></code></a> instance that
+<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.utils.html#mlflow.utils.async_logging.run_operations.RunOperations" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.utils.async_logging.run_operations.RunOperations</span></code></a> instance that
 represents future for logging operation.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
@@ -1661,7 +1661,7 @@ variable <cite>MLFLOW_ENABLE_ASYNC_LOGGING</cite>, which defaults to False if no
 metrics to the currently active run.</p></li>
 <li><p><strong>timestamp</strong> – Time when these metrics were calculated. Defaults to the current system time.</p></li>
 <li><p><strong>model_id</strong> – The ID of the model associated with the metric. If not specified, use the current
-active model ID set by <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.html#mlflow.set_active_model" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">mlflow.set_active_model</span></code></a>. If no active model
+active model ID set by <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.html#mlflow.set_active_model" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">mlflow.set_active_model</span></code></a>. If no active model
 exists, the models IDs associated with the specified or active run will be used.</p></li>
 <li><p><strong>dataset</strong> – The dataset associated with the metrics.</p></li>
 </ul>
@@ -1853,8 +1853,8 @@ sessions by first identifying unique session IDs from traces, then fetching all 
 belonging to each session in parallel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Session" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> objects, where each session
-contains <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Trace" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trace</span></code></a> objects that share the same
+<dd class="field-odd"><p>A list of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Session" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a> objects, where each session
+contains <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Trace" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trace</span></code></a> objects that share the same
 session ID. Sessions are ordered by the timestamp of their first trace (most recent first).
 Each Session object provides convenient access via <code class="docutils literal notranslate"><span class="pre">session.id</span></code> and supports
 iteration with <code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">trace</span> <span class="pre">in</span> <span class="pre">session</span></code>.</p>
@@ -1890,7 +1890,7 @@ created.</p>
 <dd class="field-odd"><p>None.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>models</strong> – List of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.LoggedModelOutput" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.LoggedModelOutput</span></code></a> instances to log
+<dd class="field-even"><p><strong>models</strong> – List of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.LoggedModelOutput" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.LoggedModelOutput</span></code></a> instances to log
 as outputs to the run.</p>
 </dd>
 </dl>
@@ -1961,7 +1961,7 @@ function returns all results in memory and may not be suitable for large result 
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Traces that satisfy the search expressions. Either as a list of
-<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Trace" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trace</span></code></a> objects or as a Pandas DataFrame,
+<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Trace" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trace</span></code></a> objects or as a Pandas DataFrame,
 depending on the value of the <cite>return_type</cite> parameter.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
@@ -1989,13 +1989,13 @@ string is provided, the function silently returns without adding that field’s 
 The supported fields are limited to <code class="docutils literal notranslate"><span class="pre">&quot;inputs&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;outputs&quot;</span></code> of spans. If the
 span name or field name contains a dot it must be enclosed in backticks. For example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># span name contains a dot</span>
-<span class="n">extract_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;`span.name`.inputs.field&quot;</span><span class="p">]</span>
+<span class="n">extract_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"`span.name`.inputs.field"</span><span class="p">]</span>
 
 <span class="c1"># field name contains a dot</span>
-<span class="n">extract_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;span.inputs.`field.name`&quot;</span><span class="p">]</span>
+<span class="n">extract_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"span.inputs.`field.name`"</span><span class="p">]</span>
 
 <span class="c1"># span name and field name contain a dot</span>
-<span class="n">extract_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;`span.name`.inputs.`field.name`&quot;</span><span class="p">]</span>
+<span class="n">extract_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"`span.name`.inputs.`field.name`"</span><span class="p">]</span>
 </pre></div>
 </div>
 </p></li>
@@ -2012,7 +2012,7 @@ trace e.g. trace_id, spans, etc.</p>
 </dd>
 </dl>
 </li>
-<li><p><cite>”list”</cite>: Returns a list of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Trace" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trace</span></code></a> objects.</p></li>
+<li><p><cite>”list”</cite>: Returns a list of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Trace" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trace</span></code></a> objects.</p></li>
 </ul>
 </p></li>
 <li><p><strong>model_id</strong> – If specified, search traces associated with the given model ID.</p></li>
@@ -2040,7 +2040,7 @@ If not provided, the search will be performed across the current active experime
 <dd><p>Get an assessment entity from the backend store.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Assessment" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code></a>: The Assessment object.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Assessment" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code></a>: The Assessment object.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -2068,7 +2068,7 @@ other parameters are ignored. <code class="docutils literal notranslate"><span c
 <a class="reference external" href="../../tracking/tracking-api.html#system_tags" rel="noreferrer" target="_blank">MLflow system tags</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.html#mlflow.ActiveRun" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.ActiveRun</span></code></a> object that acts as a context manager wrapping the
+<dd class="field-odd"><p><a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.html#mlflow.ActiveRun" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.ActiveRun</span></code></a> object that acts as a context manager wrapping the
 run’s state.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
@@ -2116,16 +2116,16 @@ a context manager within a <code class="docutils literal notranslate"><span clas
 to update active model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.html#mlflow.ActiveModel" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.ActiveModel</span></code></a> object that acts as a context manager wrapping the
+<dd class="field-odd"><p><a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.html#mlflow.ActiveModel" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.ActiveModel</span></code></a> object that acts as a context manager wrapping the
 LoggedModel’s state.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>name</strong> – The name of the <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.LoggedModel" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.LoggedModel</span></code></a> to set as active.
+<li><p><strong>name</strong> – The name of the <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.LoggedModel" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.LoggedModel</span></code></a> to set as active.
 If a LoggedModel with the name does not exist, it will be created under the current
 experiment. If multiple LoggedModels with the name exist, the latest one will be
 set as active.</p></li>
-<li><p><strong>model_id</strong> – The ID of the <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.LoggedModel" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.LoggedModel</span></code></a> to set as active.
+<li><p><strong>model_id</strong> – The ID of the <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.LoggedModel" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.LoggedModel</span></code></a> to set as active.
 If no LoggedModel with the ID exists, an exception will be raised.</p></li>
 </ul>
 </dd>
@@ -2143,7 +2143,7 @@ this method will create a new active run.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>When <cite>synchronous=True</cite>, returns parameter value. When <cite>synchronous=False</cite>, returns an
-<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.utils.html#mlflow.utils.async_logging.run_operations.RunOperations" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.utils.async_logging.run_operations.RunOperations</span></code></a> instance that represents
+<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.utils.html#mlflow.utils.async_logging.run_operations.RunOperations" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.utils.async_logging.run_operations.RunOperations</span></code></a> instance that represents
 future for logging operation.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
@@ -2181,7 +2181,7 @@ which defaults to False if not set.</p></li>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="mlflow.delete_prompt_alias">
 <span class="sig-prename descclassname"><span class="pre">mlflow.</span></span><span class="sig-name descname"><span class="pre">delete_prompt_alias</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mlflow.delete_prompt_alias" title="Link to this definition"></a></dt>
-<dd><p>Delete an alias for a <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Prompt" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prompt</span></code></a> in the MLflow Prompt Registry.</p>
+<dd><p>Delete an alias for a <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Prompt" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prompt</span></code></a> in the MLflow Prompt Registry.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -2224,7 +2224,7 @@ new active run.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>When <cite>synchronous=True</cite>, returns None. When <cite>synchronous=False</cite>, returns an
-<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.utils.html#mlflow.utils.async_logging.run_operations.RunOperations" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.utils.async_logging.run_operations.RunOperations</span></code></a> instance that
+<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.utils.html#mlflow.utils.async_logging.run_operations.RunOperations" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.utils.async_logging.run_operations.RunOperations</span></code></a> instance that
 represents future for logging operation.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
@@ -2251,7 +2251,7 @@ params to the currently active run.</p></li>
 <dd><p>Retrieve an experiment by experiment_id from the backend store</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Experiment" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.Experiment</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Experiment" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.Experiment</span></code></a></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>experiment_id</strong> – The string-ified experiment ID returned from <code class="docutils literal notranslate"><span class="pre">create_experiment</span></code>.</p>
@@ -2279,7 +2279,7 @@ params to the currently active run.</p></li>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="mlflow.load_prompt">
 <span class="sig-prename descclassname"><span class="pre">mlflow.</span></span><span class="sig-name descname"><span class="pre">load_prompt</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mlflow.load_prompt" title="Link to this definition"></a></dt>
-<dd><p>Load a <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Prompt" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prompt</span></code></a> from the MLflow Prompt Registry.</p>
+<dd><p>Load a <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Prompt" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prompt</span></code></a> from the MLflow Prompt Registry.</p>
 <p>The prompt can be specified by name and version, or by URI.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2320,7 +2320,7 @@ must be an absolute path, e.g. <code class="docutils literal notranslate"><span 
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>An instance of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Experiment" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.Experiment</span></code></a> representing the new active
+<dd class="field-odd"><p>An instance of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Experiment" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.Experiment</span></code></a> representing the new active
 experiment.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
@@ -2365,17 +2365,17 @@ for how to propagate the span context across threads.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Yields an <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Span" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.Span</span></code></a> that represents the created span.</p>
+<dd class="field-odd"><p>Yields an <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Span" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.Span</span></code></a> that represents the created span.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>name</strong> – The name of the span.</p></li>
 <li><p><strong>span_type</strong> – The type of the span. Can be either a string or
-a <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.SpanType" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpanType</span></code></a> enum value</p></li>
+a <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.SpanType" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpanType</span></code></a> enum value</p></li>
 <li><p><strong>attributes</strong> – A dictionary of attributes to set on the span.</p></li>
 <li><p><strong>trace_destination</strong> – The destination to log the trace to, such as MLflow Experiment. If
 not provided, the destination will be an active MLflow experiment or an destination
-set by the <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.tracing.html#mlflow.tracing.set_destination" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">mlflow.tracing.set_destination</span></code></a> function. This parameter
+set by the <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.tracing.html#mlflow.tracing.set_destination" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">mlflow.tracing.set_destination</span></code></a> function. This parameter
 should only be used for root span and setting this for non-root spans will be
 ignored with a warning.</p></li>
 </ul>
@@ -2487,7 +2487,7 @@ will have a column named run_id.</p></li>
 <dd><p>Retrieve an experiment by experiment name from the backend store</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>An instance of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Experiment" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.Experiment</span></code></a>
+<dd class="field-odd"><p>An instance of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Experiment" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.Experiment</span></code></a>
 if an experiment with the specified name exists, otherwise None.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
@@ -2524,13 +2524,13 @@ with a parent span and instead manually manage the parent-child relationships.</
 <cite>end()</cite> method of the span object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Span" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.Span</span></code></a> that represents the created span.</p>
+<dd class="field-odd"><p>A <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Span" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.Span</span></code></a> that represents the created span.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>name</strong> – The name of the span.</p></li>
 <li><p><strong>span_type</strong> – The type of the span. Can be either a string or
-a <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.SpanType" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpanType</span></code></a> enum value</p></li>
+a <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.SpanType" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpanType</span></code></a> enum value</p></li>
 <li><p><strong>parent_span</strong> – The parent span to link with. If None, the span will be treated as a root span.</p></li>
 <li><p><strong>inputs</strong> – The input data for the span.</p></li>
 <li><p><strong>attributes</strong> – A dictionary of attributes to set on the span.</p></li>
@@ -2658,7 +2658,7 @@ it will be truncated when stored.</p></li>
 <dd><p>Updates an existing expectation (ground truth) in a Trace.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Assessment" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code></a>: The updated feedback or expectation assessment.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Assessment" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code></a>: The updated feedback or expectation assessment.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
@@ -2810,7 +2810,7 @@ model ID is associated with the trace.</p></li>
 <dd><p>Gets the parent run for the given run id if one exists.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A single <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Run" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.Run</span></code></a> object, if the parent run exists. Otherwise,
+<dd class="field-odd"><p>A single <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Run" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.entities.Run</span></code></a> object, if the parent run exists. Otherwise,
 returns None.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
@@ -2934,13 +2934,13 @@ or LLM-as-a-Judge.</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mlflow.entities</span><span class="w"> </span><span class="kn">import</span> <span class="n">Feedback</span>
 
 <span class="n">feedback</span> <span class="o">=</span> <span class="n">Feedback</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;faithfulness&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">"faithfulness"</span><span class="p">,</span>
     <span class="n">value</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
-    <span class="n">rationale</span><span class="o">=</span><span class="s2">&quot;The model is faithful to the input.&quot;</span><span class="p">,</span>
-    <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">},</span>
+    <span class="n">rationale</span><span class="o">=</span><span class="s2">"The model is faithful to the input."</span><span class="p">,</span>
+    <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">"model"</span><span class="p">:</span> <span class="s2">"gpt-4o-mini"</span><span class="p">},</span>
 <span class="p">)</span>
 
-<span class="n">mlflow</span><span class="o">.</span><span class="n">log_assessment</span><span class="p">(</span><span class="n">trace_id</span><span class="o">=</span><span class="s2">&quot;1234&quot;</span><span class="p">,</span> <span class="n">assessment</span><span class="o">=</span><span class="n">feedback</span><span class="p">)</span>
+<span class="n">mlflow</span><span class="o">.</span><span class="n">log_assessment</span><span class="p">(</span><span class="n">trace_id</span><span class="o">=</span><span class="s2">"1234"</span><span class="p">,</span> <span class="n">assessment</span><span class="o">=</span><span class="n">feedback</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The following code annotates a trace with human-provided ground truth with source information.
@@ -2951,16 +2951,16 @@ When the source is not provided, the default source is set to “default” with
 <span class="c1"># Specify the annotator information as a source.</span>
 <span class="n">source</span> <span class="o">=</span> <span class="n">AssessmentSource</span><span class="p">(</span>
     <span class="n">source_type</span><span class="o">=</span><span class="n">AssessmentSourceType</span><span class="o">.</span><span class="n">HUMAN</span><span class="p">,</span>
-    <span class="n">source_id</span><span class="o">=</span><span class="s2">&quot;john@example.com&quot;</span><span class="p">,</span>
+    <span class="n">source_id</span><span class="o">=</span><span class="s2">"john@example.com"</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">expectation</span> <span class="o">=</span> <span class="n">Expectation</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;expected_answer&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">"expected_answer"</span><span class="p">,</span>
     <span class="n">value</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
     <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">mlflow</span><span class="o">.</span><span class="n">log_assessment</span><span class="p">(</span><span class="n">trace_id</span><span class="o">=</span><span class="s2">&quot;1234&quot;</span><span class="p">,</span> <span class="n">assessment</span><span class="o">=</span><span class="n">expectation</span><span class="p">)</span>
+<span class="n">mlflow</span><span class="o">.</span><span class="n">log_assessment</span><span class="p">(</span><span class="n">trace_id</span><span class="o">=</span><span class="s2">"1234"</span><span class="p">,</span> <span class="n">assessment</span><span class="o">=</span><span class="n">expectation</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="simple">
@@ -2971,40 +2971,40 @@ When the source is not provided, the default source is set to “default” with
 <span class="kn">from</span><span class="w"> </span><span class="nn">mlflow.entities.assessment</span><span class="w"> </span><span class="kn">import</span> <span class="n">Expectation</span>
 
 <span class="n">expectation</span> <span class="o">=</span> <span class="n">Expectation</span><span class="p">(</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;expected_message&quot;</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">"expected_message"</span><span class="p">,</span>
     <span class="c1"># Full LLM message including expected tool calls</span>
     <span class="n">value</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;role&quot;</span><span class="p">:</span> <span class="s2">&quot;assistant&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;content&quot;</span><span class="p">:</span> <span class="s2">&quot;The answer is 42.&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;tool_calls&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">"role"</span><span class="p">:</span> <span class="s2">"assistant"</span><span class="p">,</span>
+        <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"The answer is 42."</span><span class="p">,</span>
+        <span class="s2">"tool_calls"</span><span class="p">:</span> <span class="p">[</span>
             <span class="p">{</span>
-                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;1234&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;function&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;function&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;add&quot;</span><span class="p">,</span> <span class="s2">&quot;arguments&quot;</span><span class="p">:</span> <span class="s2">&quot;40 + 2&quot;</span><span class="p">},</span>
+                <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"1234"</span><span class="p">,</span>
+                <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"function"</span><span class="p">,</span>
+                <span class="s2">"function"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"add"</span><span class="p">,</span> <span class="s2">"arguments"</span><span class="p">:</span> <span class="s2">"40 + 2"</span><span class="p">},</span>
             <span class="p">}</span>
         <span class="p">],</span>
     <span class="p">},</span>
 <span class="p">)</span>
-<span class="n">mlflow</span><span class="o">.</span><span class="n">log_assessment</span><span class="p">(</span><span class="n">trace_id</span><span class="o">=</span><span class="s2">&quot;1234&quot;</span><span class="p">,</span> <span class="n">assessment</span><span class="o">=</span><span class="n">expectation</span><span class="p">)</span>
+<span class="n">mlflow</span><span class="o">.</span><span class="n">log_assessment</span><span class="p">(</span><span class="n">trace_id</span><span class="o">=</span><span class="s2">"1234"</span><span class="p">,</span> <span class="n">assessment</span><span class="o">=</span><span class="n">expectation</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>You can also log an error information during the feedback generation process. To do so,
-provide an instance of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.AssessmentError" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentError</span></code></a> to the <cite>error</cite>
+provide an instance of <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.AssessmentError" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">AssessmentError</span></code></a> to the <cite>error</cite>
 parameter, and leave the <cite>value</cite> parameter as <cite>None</cite>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">mlflow</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mlflow.entities</span><span class="w"> </span><span class="kn">import</span> <span class="n">AssessmentError</span><span class="p">,</span> <span class="n">Feedback</span>
 
 <span class="n">error</span> <span class="o">=</span> <span class="n">AssessmentError</span><span class="p">(</span>
-    <span class="n">error_code</span><span class="o">=</span><span class="s2">&quot;RATE_LIMIT_EXCEEDED&quot;</span><span class="p">,</span>
-    <span class="n">error_message</span><span class="o">=</span><span class="s2">&quot;Rate limit for the judge exceeded.&quot;</span><span class="p">,</span>
+    <span class="n">error_code</span><span class="o">=</span><span class="s2">"RATE_LIMIT_EXCEEDED"</span><span class="p">,</span>
+    <span class="n">error_message</span><span class="o">=</span><span class="s2">"Rate limit for the judge exceeded."</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">feedback</span> <span class="o">=</span> <span class="n">Feedback</span><span class="p">(</span>
-    <span class="n">trace_id</span><span class="o">=</span><span class="s2">&quot;1234&quot;</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;faithfulness&quot;</span><span class="p">,</span>
+    <span class="n">trace_id</span><span class="o">=</span><span class="s2">"1234"</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">"faithfulness"</span><span class="p">,</span>
     <span class="n">error</span><span class="o">=</span><span class="n">error</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">mlflow</span><span class="o">.</span><span class="n">log_assessment</span><span class="p">(</span><span class="n">trace_id</span><span class="o">=</span><span class="s2">&quot;1234&quot;</span><span class="p">,</span> <span class="n">assessment</span><span class="o">=</span><span class="n">feedback</span><span class="p">)</span>
+<span class="n">mlflow</span><span class="o">.</span><span class="n">log_assessment</span><span class="p">(</span><span class="n">trace_id</span><span class="o">=</span><span class="s2">"1234"</span><span class="p">,</span> <span class="n">assessment</span><span class="o">=</span><span class="n">feedback</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -3054,7 +3054,7 @@ dictionary to the currently active run.</p></li>
 <dl class="mat function">
 <dt class="sig sig-object mat" id="mlflow.set_prompt_alias">
 <span class="sig-prename descclassname"><span class="pre">mlflow.</span></span><span class="sig-name descname"><span class="pre">set_prompt_alias</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mlflow.set_prompt_alias" title="Link to this definition"></a></dt>
-<dd><p>Set an alias for a <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Prompt" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prompt</span></code></a> in the MLflow Prompt Registry.</p>
+<dd><p>Set an alias for a <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Prompt" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Prompt</span></code></a> in the MLflow Prompt Registry.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -3078,19 +3078,19 @@ thresholds, an ModelValidationFailedException will be raised.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This API is a replacement for the deprecated model validation
-functionality in the <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.html#mlflow.evaluate" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">mlflow.evaluate</span></code></a> API.</p>
+functionality in the <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.html#mlflow.evaluate" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">mlflow.evaluate</span></code></a> API.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>validation_thresholds</strong> – A dictionary of metric name to
-<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.models.html#mlflow.models.MetricThreshold" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.models.MetricThreshold</span></code></a> used for model validation.
+<a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.models.html#mlflow.models.MetricThreshold" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.models.MetricThreshold</span></code></a> used for model validation.
 Each metric name must either be the name of a builtin metric or the
 name of a metric defined in the <code class="docutils literal notranslate"><span class="pre">extra_metrics</span></code> parameter.</p></li>
 <li><p><strong>candidate_result</strong> – The evaluation result of the candidate model.
-Returned by the <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.html#mlflow.evaluate" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">mlflow.evaluate</span></code></a> API.</p></li>
+Returned by the <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.html#mlflow.evaluate" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">mlflow.evaluate</span></code></a> API.</p></li>
 <li><p><strong>baseline_result</strong> – The evaluation result of the baseline model.
-Returned by the <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.html#mlflow.evaluate" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">mlflow.evaluate</span></code></a> API.
+Returned by the <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.html#mlflow.evaluate" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">mlflow.evaluate</span></code></a> API.
 If set to None, the candidate model result will be
 compared against the threshold values directly.</p></li>
 </ul>
@@ -3127,7 +3127,7 @@ this API will not retrieve that run.</p>
 </div>
 <p><strong>Note</strong>: You cannot access currently-active run attributes
 (parameters, metrics, etc.) through the run returned by <code class="docutils literal notranslate"><span class="pre">mlflow.active_run</span></code>. In order
-to access such attributes, use the <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.client.html#mlflow.client.MlflowClient" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.client.MlflowClient</span></code></a> as follows:</p>
+to access such attributes, use the <a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.client.html#mlflow.client.MlflowClient" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">mlflow.client.MlflowClient</span></code></a> as follows:</p>
 <div class="literal-block-wrapper docutils container" id="id3">
 <div class="code-block-caption"><span class="caption-text">Output</span><a class="headerlink" href="#id3" title="Link to this code"></a></div>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Active run_id: 6f252757005748708cd3aad75d1ff462
@@ -3150,7 +3150,7 @@ but want to preserve the original assessment for future judge fine-tuning.</p>
 <p>If you want to mutate an assessment in-place, use <code class="xref py py-func docutils literal notranslate"><span class="pre">update_assessment</span></code> instead.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Assessment" rel="noreferrer" target="_blank" title="(in MLflow v3.12.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code></a>: The created assessment.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://mlflow.org/docs/latest/api_reference/python_api/mlflow.entities.html#mlflow.entities.Assessment" rel="noreferrer" target="_blank" title="(in MLflow v3.16.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Assessment</span></code></a>: The created assessment.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">

@@ -242,14 +242,14 @@
 <span class="gp">&gt;&gt; </span><span class="nb">cd</span><span class="w"> </span><span class="n">Software</span><span class="o">/</span><span class="n">MATLAB</span>
 <span class="gp">&gt;&gt; </span><span class="nb">startup</span>
 <span class="go">% Or for example use run with the absolute path of the script</span>
-<span class="gp">&gt;&gt; </span><span class="nb">run</span><span class="p">(</span><span class="s">&#39;/work/matlab-mlflow/Software/MATLAB/startup.m&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt; </span><span class="nb">run</span><span class="p">(</span><span class="s">'/work/matlab-mlflow/Software/MATLAB/startup.m'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Further, to configure MATLAB’s Python Interface to work with the (virtual) environment which contains the <a class="reference internal" href="#requirements">required Python packages</a>, use the <a class="reference external" href="https://www.mathworks.com/help/matlab/ref/pyenv.html" rel="noreferrer" target="_blank"><code class="docutils literal notranslate"><span class="pre">pyenv</span></code></a> function:</p>
 <div class="highlight-matlabsession notranslate"><div class="highlight"><pre><span></span><span class="go">% For example on Linux</span>
-<span class="gp">&gt;&gt; </span><span class="nb">pyenv</span><span class="p">(</span><span class="s">&#39;Version&#39;</span><span class="p">,</span><span class="s">&#39;/work/matlab-mlflow/Software/Python/.venv/bin/python&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt; </span><span class="nb">pyenv</span><span class="p">(</span><span class="s">'Version'</span><span class="p">,</span><span class="s">'/work/matlab-mlflow/Software/Python/.venv/bin/python'</span><span class="p">)</span>
 <span class="go">% Or on Windows</span>
-<span class="gp">&gt;&gt; </span><span class="nb">pyenv</span><span class="p">(</span><span class="s">&#39;Version&#39;</span><span class="p">,</span><span class="s">&#39;c:\work\matlab-mlflow\Software\Python\.venv\Scripts/pythonw.exe&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt; </span><span class="nb">pyenv</span><span class="p">(</span><span class="s">'Version'</span><span class="p">,</span><span class="s">'c:\work\matlab-mlflow\Software\Python\.venv\Scripts/pythonw.exe'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><em>This is a persistent setting and does not have to be repeated every MATLAB session.</em></p>
