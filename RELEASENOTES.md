@@ -1,5 +1,10 @@
 # MATLAB Interface *for MLflow* - Release Notes
 
+## 1.0.1 (September 2026)
+
+* Minor README updates
+* Minor fix in internal unit tests
+
 ## 1.0.0 (May 2026)
 
 * **First independent release published on GitHub.**
